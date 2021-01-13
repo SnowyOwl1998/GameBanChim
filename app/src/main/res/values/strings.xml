@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">Game Ban Chim</string>
+    <string name="app_name">Bắn Chim Troll</string>
+    <string name="title">Bắn Chim Troll</string>
+    <string name="play">Quẩy!</string>
+    <string name="high_score">HIGHSCORE</string>
+    <string name="help">Hướng dẫn</string>
+    <string name="shoot">Tiêu diệt</string>
+    <string name="dont_shoot">Không bắn</string>
 </resources>

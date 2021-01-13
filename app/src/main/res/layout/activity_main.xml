@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="48dp"
-        android:text="Game Bắn Chim"
+        android:text="@string/title"
         android:textColor="#ffffff"
         android:shadowColor="#000000"
         android:shadowDx="1"
@@ -27,7 +27,8 @@
         android:shadowRadius="10"
         android:layout_centerHorizontal="true"
         android:layout_above="@id/play"
-        android:layout_below="@id/highscore"
+        android:layout_below="@id/highScoreTxt"
+        android:fontFamily="@font/nunito_bold"
         />
 
     <TextView
@@ -35,20 +36,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="64dp"
-        android:text="PLAY!"
+        android:text="@string/play"
         android:textColor="#000000"
         android:layout_centerInParent="true"
+        android:fontFamily="@font/nunito_bold"
         />
 
     <TextView
-        android:id="@+id/highscore"
+        android:id="@+id/highScoreTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="24dp"
-        android:text="HIGHSCORE"
+        android:text="@string/high_score"
         android:textColor="#000000"
         android:layout_alignParentRight="true"
         android:layout_margin="10dp"
+        android:fontFamily="@font/nunito_semibold"
         />
 
     <TextView
@@ -56,19 +59,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="36dp"
-        android:text="HELP"
+        android:text="@string/help"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/play"
         android:textColor="#000000"
+        android:fontFamily="@font/nunito_light"
         />
 
     <ImageView
-        android:id="@+id/volumebutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/volumeButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:src="@drawable/ic_baseline_volume_up_24"
         android:layout_alignParentLeft="true"
         android:layout_margin="10dp"
+        />
+
+    <ImageView
+        android:id="@+id/musicButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_baseline_music_note_24"
+        android:layout_margin="10dp"
+        android:layout_toRightOf="@id/volumeButton"
         />
 
 </RelativeLayout>
