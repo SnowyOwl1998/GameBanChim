@@ -154,7 +154,6 @@ public class GameView extends SurfaceView implements Runnable {
 
             for (Bird1 bird1 : bird1s){
                 bird1.health = (int)(1 + level*0.07);
-                Log.d("bird1", "bird health: "+bird1.health);
                 if (Rect.intersects(bird1.getCollisionShape(), bullet.getCollisionShape())){
                     bird1.health -= 1;
                     bird1.x += 50;
@@ -199,7 +198,7 @@ public class GameView extends SurfaceView implements Runnable {
                 }
         }
 
-        if (birdCounter == 100){
+        if (birdCounter == 20){
             birdCounter = 0;
             level++;
         }
@@ -224,7 +223,7 @@ public class GameView extends SurfaceView implements Runnable {
                     return;
                 }
 
-                int bound = (int) (30 * screenRatioX + level);
+                int bound = (int) (20 * screenRatioX + level);
                 bird1.speed = random.nextInt(bound);
 
                 if (bird1.speed < 10 * screenRatioX + level)
@@ -236,7 +235,7 @@ public class GameView extends SurfaceView implements Runnable {
                 bird1.wasShot = false;
             }
         }
-        if(level >= 2)
+        if(level >= 5)
         for(Bird2 bird2 : bird2s){
             bird2.x -= bird2.speed;
             int upOrDown = random.nextInt(100);
@@ -245,9 +244,9 @@ public class GameView extends SurfaceView implements Runnable {
             else
                 isFlyUp = true;
             if(isFlyUp)
-                bird2.y += bird2.speed/2 + level;
+                bird2.y += bird2.speed/3 + level;
             else
-                bird2.y -= bird2.speed/2 - level;
+                bird2.y -= bird2.speed/3 - level;
 
 
             if (bird2.x + bird2.width < 0){
@@ -264,12 +263,12 @@ public class GameView extends SurfaceView implements Runnable {
                     bird2.speed = (int) (5 * screenRatioX + level);
 
                 bird2.x = screenX;
-                bird2.y = random.nextInt(screenY - bird2.height);
+                bird2.y = random.nextInt(screenY - bird2.height - 200) + 200;
 
                 bird2.wasShot = false;
             }
         }
-        if(level >= 3)
+        if(level >= 10)
             for(Troll troll : trolls){
                 troll.x -= troll.speed;
                 if (troll.x + troll.width < 0){
