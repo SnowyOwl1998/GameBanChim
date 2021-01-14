@@ -11,7 +11,7 @@ import static com.example.gamebanchim.GameView.screenRatioY;
 public class Bird2 {
     public int speed = 30;
     public boolean wasShot = true;
-    int x = 0,y, width, height, birdCounter = 1, deadCounter = 1, health = 3;
+    int x = 0,y, width, height, birdCounter = 1, deadCounter = 1, health = 1;
     Bitmap bird1, bird2, bird3, bird4, dead1, dead2, dead3, dead4;
 
     Bird2(Resources res) {
