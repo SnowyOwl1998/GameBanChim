@@ -25,10 +25,10 @@ import java.util.concurrent.ThreadLocalRandom;
 
  public class GameView extends SurfaceView implements Runnable {
 
-    public static int level = 10;
+    public static int levelUp = 0 ;
     private Thread thread;
     private boolean isPlaying, isGameOver = false, isFlyUp = false;
-    private int screenX, screenY, counter = 0, score = 0, upgradeMax = 25, upgradeSpeed = 25, randomUpgrade = 0, birdCounter = 0;
+    private int screenX, screenY, counter = 0, score = 0, upgradeMax = 25, level = 1, upgradeSpeed = 5, randomUpgrade = 50, birdCounter = 0;
     private Bird1[] bird1s;
     private Bird2[] bird2s;
     public static float screenRatioX, screenRatioY;
@@ -63,7 +63,7 @@ import java.util.concurrent.ThreadLocalRandom;
             soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
 
         shootSound = soundPool.load(activity, R.raw.shoot, 1);
-
+        levelUp = level;
         this.screenX = screenX;
         this.screenY = screenY;
         screenRatioX = 1920f / screenX;
@@ -80,7 +80,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
         paintScore = new Paint();
         paintScore.setTextSize(128);
-        paintScore.setColor(Color.WHITE);
+        paintScore.setColor(Color.BLACK);
         paintSpeed = new Paint();
         paintSpeed.setTextSize(64);
         paintSpeed.setColor(Color.BLACK);
@@ -120,7 +120,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void update(){
-        background1.x -= 10*screenRatioX - level;
+        background1.x -= 10*screenRatioX;
 //        background2.x -= 10*screenRatioX;
 
         if (background1.x + this.screenX < 0){
@@ -199,23 +199,23 @@ import java.util.concurrent.ThreadLocalRandom;
                         troll.x = -500;
                         bullet.x = screenX + 500;
                         troll.wasShot =  true;
-                        randomUpgrade = random.nextInt(15);
-                        if (randomUpgrade == 1) randomUpgrade = 10;
+                        randomUpgrade = ThreadLocalRandom.current().nextInt(11, 15);
+                        if (randomUpgrade == 1) randomUpgrade = 50;
                     }
                 }
         }
 
-        if (birdCounter == 20){
+        if (birdCounter >= 20 && level < 15){
             birdCounter = 0;
             level++;
         }
 
-        if (randomUpgrade == 1 && upgradeSpeed < upgradeMax) {
+        if (randomUpgrade <= 1 && upgradeSpeed < upgradeMax) {
             upgradeSpeed++;
-            randomUpgrade = 0;
-        } else if (randomUpgrade >= 13 && upgradeSpeed > 0) {
+            randomUpgrade = 50;
+        } else if (randomUpgrade == 13 && upgradeSpeed > 0) {
             upgradeSpeed--;
-            randomUpgrade = 0;
+            randomUpgrade = 50;
         }
 
         for(Bullet bullet : trash)
@@ -243,7 +243,7 @@ import java.util.concurrent.ThreadLocalRandom;
                 bird1.wasShot = false;
             }
         }
-        if(level >= 5)
+        if(level >= 4)
         for(Bird2 bird2 : bird2s){
             bird2.x -= bird2.speed;
             int upOrDown = random.nextInt(100);
@@ -275,7 +275,7 @@ import java.util.concurrent.ThreadLocalRandom;
                 bird2.wasShot = false;
             }
         }
-        if(level >= 10)
+        if(level >= 7)
             for(Troll troll : trolls){
                 troll.x -= troll.speed;
                 if (troll.x + troll.width < 0){

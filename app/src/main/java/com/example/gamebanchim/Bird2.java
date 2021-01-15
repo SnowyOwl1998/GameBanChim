@@ -7,12 +7,12 @@ import android.graphics.Rect;
 
 import static com.example.gamebanchim.GameView.screenRatioX;
 import static com.example.gamebanchim.GameView.screenRatioY;
-import static com.example.gamebanchim.GameView.level;
+import static com.example.gamebanchim.GameView.levelUp;
 
 public class Bird2 {
     public int speed = 30;
     public boolean wasShot = true;
-    int x = 0,y, width, height, birdCounter = 1, deadCounter = 1, health = (int) (2 + level*0.05);
+    int x = 0,y, width, height, birdCounter = 1, deadCounter = 1, health = (int) (2 + levelUp*0.05);
     Bitmap bird1, bird2, bird3, bird4, dead1, dead2, dead3, dead4;
 
     Bird2(Resources res) {
