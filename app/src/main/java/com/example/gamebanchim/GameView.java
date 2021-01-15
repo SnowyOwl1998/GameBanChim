@@ -16,15 +16,19 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 
+import androidx.annotation.RequiresApi;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
-public class GameView extends SurfaceView implements Runnable {
+ public class GameView extends SurfaceView implements Runnable {
 
+    public static int level = 10;
     private Thread thread;
     private boolean isPlaying, isGameOver = false, isFlyUp = false;
-    private int screenX, screenY, counter = 0, level = 1, score = 0, upgradeMax = 25, upgradeSpeed = 0, randomUpgrade = 0, birdCounter = 0;
+    private int screenX, screenY, counter = 0, score = 0, upgradeMax = 25, upgradeSpeed = 25, randomUpgrade = 0, birdCounter = 0;
     private Bird1[] bird1s;
     private Bird2[] bird2s;
     public static float screenRatioX, screenRatioY;
@@ -104,6 +108,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void run() {
         while (isPlaying){
@@ -113,6 +118,7 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void update(){
         background1.x -= 10*screenRatioX - level;
 //        background2.x -= 10*screenRatioX;
@@ -153,13 +159,13 @@ public class GameView extends SurfaceView implements Runnable {
             bullet.x += 50 * screenRatioX;
 
             for (Bird1 bird1 : bird1s){
-                bird1.health = (int)(1 + level*0.07);
+//                bird1.health = (int)(1 + level*0.1);
                 if (Rect.intersects(bird1.getCollisionShape(), bullet.getCollisionShape())){
                     bird1.health -= 1;
                     bird1.x += 50;
                     bullet.x = screenX + 500;
                     if (bird1.health <= 0) {
-                        score++;
+                        score += (int)1+level*0.05;
                         birdCounter++;
                         bird1.x = -500;
                         bullet.x = screenX + 500;
@@ -170,14 +176,14 @@ public class GameView extends SurfaceView implements Runnable {
             }
 
             for (Bird2 bird2 : bird2s){
-                bird2.health = (int)(1 + level*0.15);
+//                bird2.health = (int)(1 + level*0.05);
                 if (Rect.intersects(bird2.getCollisionShape(), bullet.getCollisionShape())){
                     bird2.health -= 1;
-                    bird2.x += 50 ;
+                    bird2.x += 100 ;
                     bullet.x = screenX + 500;
                     if (bird2.health <= 0){
                         birdCounter++;
-                        score += 2;
+                        score += 2+level*0.03;
                         bird2.x = -500;
                         bullet.x = screenX + 500;
                         bird2.wasShot =  true;
@@ -193,7 +199,8 @@ public class GameView extends SurfaceView implements Runnable {
                         troll.x = -500;
                         bullet.x = screenX + 500;
                         troll.wasShot =  true;
-                        randomUpgrade = 13;
+                        randomUpgrade = random.nextInt(15);
+                        if (randomUpgrade == 1) randomUpgrade = 10;
                     }
                 }
         }
@@ -206,7 +213,7 @@ public class GameView extends SurfaceView implements Runnable {
         if (randomUpgrade == 1 && upgradeSpeed < upgradeMax) {
             upgradeSpeed++;
             randomUpgrade = 0;
-        } else if (randomUpgrade == 13 && upgradeSpeed > 0) {
+        } else if (randomUpgrade >= 13 && upgradeSpeed > 0) {
             upgradeSpeed--;
             randomUpgrade = 0;
         }
@@ -223,14 +230,15 @@ public class GameView extends SurfaceView implements Runnable {
                     return;
                 }
 
-                int bound = (int) (20 * screenRatioX + level);
+                int bound = (int) (20 * screenRatioX + level/3);
                 bird1.speed = random.nextInt(bound);
 
-                if (bird1.speed < 10 * screenRatioX + level)
-                    bird1.speed = (int) (10 * screenRatioX + level);
+                if (bird1.speed < 10 * screenRatioX + level/3)
+                    bird1.speed = (int) (10 * screenRatioX + level/3);
 
                 bird1.x = screenX;
-                bird1.y = random.nextInt(screenY - bird1.height);
+//                bird1.y = random.nextInt(screenY - bird1.height - 200) + 200;
+                bird1.y = ThreadLocalRandom.current().nextInt(50, screenY - bird1.height - 50);
 
                 bird1.wasShot = false;
             }
@@ -244,11 +252,9 @@ public class GameView extends SurfaceView implements Runnable {
             else
                 isFlyUp = true;
             if(isFlyUp)
-                bird2.y += bird2.speed/3 + level;
+                bird2.y += 5*screenRatioY;
             else
-                bird2.y -= bird2.speed/3 - level;
-
-
+                bird2.y -= 5*screenRatioY;
             if (bird2.x + bird2.width < 0){
 
                 if(!bird2.wasShot) {
@@ -256,14 +262,15 @@ public class GameView extends SurfaceView implements Runnable {
                     return;
                 }
 
-                int bound = (int) (20 * screenRatioX + level);
+                int bound = (int) (20 * screenRatioX + level/3);
                 bird2.speed = random.nextInt(bound);
 
-                if (bird2.speed < 5 * screenRatioX + level)
-                    bird2.speed = (int) (5 * screenRatioX + level);
+                if (bird2.speed < 5 * screenRatioX + level/3)
+                    bird2.speed = (int) (5 * screenRatioX + level/3);
 
                 bird2.x = screenX;
-                bird2.y = random.nextInt(screenY - bird2.height - 200) + 200;
+//                bird2.y = random.nextInt(screenY - bird2.height - 200) + 4;
+                bird2.y = ThreadLocalRandom.current().nextInt(150, screenY - bird2.height - 150);
 
                 bird2.wasShot = false;
             }
@@ -273,15 +280,15 @@ public class GameView extends SurfaceView implements Runnable {
                 troll.x -= troll.speed;
                 if (troll.x + troll.width < 0){
 
-                    int bound = (int) (50 * screenRatioX + level);
+                    int bound = (int) (50 * screenRatioX + level/5);
                     troll.speed = random.nextInt(bound);
 
-                    if (troll.speed < 35 * screenRatioX + level)
-                        troll.speed = (int) (35 * screenRatioX + level);
+                    if (troll.speed < 35 * screenRatioX + level/5)
+                        troll.speed = (int) (35 * screenRatioX + level/5);
 
                     troll.x = screenX;
-                    troll.y = random.nextInt(screenY - troll.height);
-
+//                    troll.y = random.nextInt(screenY - troll.height);
+                    troll.y = ThreadLocalRandom.current().nextInt(50, screenY - troll.height - 50);
                     troll.wasShot = false;
                 }
             }

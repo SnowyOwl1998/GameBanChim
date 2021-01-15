@@ -5,13 +5,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 
+import static com.example.gamebanchim.GameView.level;
 import static com.example.gamebanchim.GameView.screenRatioX;
 import static com.example.gamebanchim.GameView.screenRatioY;
 
 public class Bird1 {
     public int speed = 20;
     public boolean wasShot = true;
-    int x = 0,y, width, height, birdCounter = 1, deadCounter = 1, health = 1;
+    int x = 0,y, width, height, birdCounter = 1, deadCounter = 1, health = (int) (1+level*0.1);
     Bitmap bird1, bird2, bird3, bird4, dead1, dead2, dead3, dead4;
 
     Bird1(Resources res) {
